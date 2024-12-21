@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from restaurant.models import Product
+from restaurant.models import Dish
 
 
 class Cart(object):
@@ -15,15 +15,15 @@ class Cart(object):
 
     # Добавление товар в корзину пользователя
     # или обновление количества товаров
-    def add(self, product, quantity=1, update_quantity=False):
-        product_id = str(product.id)
-        if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0,
-                                     'price': str(product.price)}
+    def add(self, Dish, quantity=1, update_quantity=False):
+        Dish_id = str(Dish.id)
+        if Dish_id not in self.cart:
+            self.cart[Dish_id] = {'quantity': 0,
+                                     'price': str(Dish.price)}
         if update_quantity:
-            self.cart[product_id]['quantity'] = quantity
+            self.cart[Dish_id]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] += quantity
+            self.cart[Dish_id]['quantity'] += quantity
         self.save()
 
         # Сохранение данных в сессию
@@ -33,19 +33,19 @@ class Cart(object):
         self.session.modified = True
 
         # Удаление товара из корзины
-    def remove(self, product):
-        product_id = str(product.id)
-        if product_id in self.cart:
-            del self.cart[product_id]
+    def remove(self, Dish):
+        Dish_id = str(Dish.id)
+        if Dish_id in self.cart:
+            del self.cart[Dish_id]
             self.save()
 
 
     # Итерация по товарам
     def __iter__(self):
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
-        for product in products:
-            self.cart[str(product.id)]['product'] = product
+        Dish_ids = self.cart.keys()
+        Dish = Dish.objects.filter(id__in=Dish_ids)
+        for Dish in Dish:
+            self.cart[str(Dish.id)]['Dish'] = Dish
 
         for item in self.cart.values():
             item['price'] = Decimal(item['price'])
