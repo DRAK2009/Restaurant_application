@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2 class="title mb-3">Список страв</h2>
+    <form method="get" class="form-inline mb-3">
+        <label for="category" class="mr-2">Категорія:</label>
+        {{ form.category }}
+        <button type="submit" class="btn btn-primary ml-2">Фільтрувати</button>
+    </form>
+
+    <ul class="list-group">
+        {% for dish in dishes %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{% url 'dish-detail' dish.pk %}" class="dish-link">{{ dish.name }}</a>
+        </li>
+        {% empty %}
+        <li class="list-group-item">Страви відсутні.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

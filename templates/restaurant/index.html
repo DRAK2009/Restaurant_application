@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="menu-container">
+    <div class="text-center menu-content">
+        <h2 class="mb-4 display-4 text-primary">Welcome to Our Restaurant</h2>
+        <div class="alert alert-info shadow-lg" role="alert">
+            {{ render_string }}
+        </div>
+
+        {% if request.user.is_authenticated %}
+            <div class="alert alert-success p-4 rounded">
+                <h3 class="text-success">Hello, Authenticated User!</h3>
+                <p>We are happy to see you. Explore our menu and enjoy your meal!</p>
+            </div>
+        {% else %}
+            <div class="alert alert-danger p-4 rounded">
+                <h3 class="text-danger">Hello, Unauthenticated User!</h3>
+                <p>Please <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Log in</a> to access the full features of the site.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
